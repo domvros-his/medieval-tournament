@@ -6,7 +6,7 @@
     <title>Μεσαιωνικό Τουρνουά: Δύση vs Βυζάντιο</title>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=EB+Garamond:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=EB+Garamond:wght@400;600;700&display=swap');
     </style>
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -15,8 +15,9 @@
         :root {
             --west-color: #2c3e50;
             --east-color: #8e44ad;
-            --bg-overlay: rgba(244, 232, 211, 0.85);
-            --text-color: #2c1a0b;
+            --bg-overlay: rgba(162, 175, 185, 0.85); 
+            --box-bg: rgba(176, 165, 147, 0.95); 
+            --text-color: #1a1105; 
         }
         
         body {
@@ -29,93 +30,138 @@
             color: var(--text-color);
             text-align: center;
             margin: 0;
-            padding: 20px;
-            padding-bottom: 80px; 
+            padding: 5px;
+            padding-bottom: 55px; 
             user-select: none;
         }
         
-        h1, h2, .menu-btn, .choice-btn, .match-term, .scoreboard, .btn-start, .next-btn {
+        h1, h2, h3, .menu-btn, .choice-btn, .match-term, .scoreboard, .btn-start, .next-btn {
             font-family: 'Cinzel', serif;
         }
 
-        h1 { font-size: 2.8em; border-bottom: 3px solid #d35400; display: inline-block; padding-bottom: 10px; color: #5a2e0e; }
+        h1 { font-size: 2em; border-bottom: 3px solid #7a4621; display: inline-block; padding-bottom: 5px; margin: 5px 0; color: #3e1f08; }
         
+        /* --- Flashing Gold Animation --- */
+        @keyframes flashGold {
+            0% { opacity: 1; text-shadow: 0 0 10px #f1c40f, 0 0 20px #e67e22, 1px 1px 4px #000; }
+            50% { opacity: 0.6; text-shadow: 1px 1px 3px #000; }
+            100% { opacity: 1; text-shadow: 0 0 10px #f1c40f, 0 0 20px #e67e22, 1px 1px 4px #000; }
+        }
+        .flashing-gold {
+            color: #f1c40f; 
+            animation: flashGold 1.5s infinite;
+            font-weight: bold;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin: 0;
+        }
+
         /* --- Οθόνη Πρόσκλησης & Βίντεο --- */
-        #invitation-screen, #intro-screen { margin-top: 20px; }
+        #invitation-screen, #intro-screen { margin-top: 5px; }
         
         #invitation-img {
             max-width: 80%;
-            max-height: 60vh;
-            border: 6px solid #5a2e0e;
+            max-height: 45vh;
+            border: 4px solid #3e1f08;
             border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
             object-fit: contain;
         }
 
         #intro-video { 
             max-width: 80%; 
-            max-height: 60vh; 
-            border: 6px solid #5a2e0e; 
+            max-height: 45vh; 
+            border: 4px solid #3e1f08; 
             border-radius: 10px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
-            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
+            margin-bottom: 10px;
             background-color: #000;
         }
 
         /* --- Σκορ --- */
         .scoreboard {
-            display: flex; justify-content: space-around; font-size: 2em; margin-bottom: 30px;
-            font-weight: bold; background: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 15px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #d35400;
+            display: flex; justify-content: space-around; font-size: 1.4em; margin-bottom: 10px;
+            font-weight: bold; background: var(--box-bg); padding: 8px; border-radius: 10px; 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3); border: 2px solid #4a2e1b;
         }
         .score-west { color: var(--west-color); }
-        .score-east { color: var(--east-color); }
-        .points-btn { font-family: 'Cinzel', serif; font-size: 0.5em; cursor: pointer; padding: 5px 15px; margin-left: 10px; border: none; border-radius: 5px; }
+        .score-east { color: #5a2673; } 
+        .points-btn { font-family: 'Cinzel', serif; font-size: 0.6em; cursor: pointer; padding: 2px 8px; margin-left: 5px; border: none; border-radius: 5px; }
         
         /* --- Κουμπιά --- */
         .menu-btn {
-            font-size: 1.5em; padding: 20px 40px; margin: 10px; cursor: pointer;
-            background-color: #d35400; color: white; border: none; border-radius: 10px;
-            box-shadow: 0 5px #a04000; transition: 0.2s; font-weight: 700;
+            font-size: 1.2em; padding: 10px 20px; margin: 4px; cursor: pointer;
+            background-color: #a04000; color: white; border: none; border-radius: 8px;
+            box-shadow: 0 3px #783000; transition: 0.2s; font-weight: 700;
         }
-        .menu-btn:active { box-shadow: 0 0 #a04000; transform: translateY(5px); }
-        .btn-gold { background-color: #f39c12; box-shadow: 0 5px #e67e22; color: #fff; }
-        .btn-gold:active { box-shadow: 0 0 #e67e22; }
-        .btn-start { background-color: #27ae60; box-shadow: 0 5px #1e8449; font-size: 1.8em; }
-        .btn-start:active { box-shadow: 0 0 #1e8449; }
+        .menu-btn:active { box-shadow: 0 0 #783000; transform: translateY(3px); }
+        .btn-gold { background-color: #d68910; box-shadow: 0 3px #a04000; color: #fff; }
+        .btn-gold:active { box-shadow: 0 0 #a04000; }
+        .btn-start { background-color: #1e8449; box-shadow: 0 3px #145a32; font-size: 1.4em; }
+        .btn-start:active { box-shadow: 0 0 #145a32; }
         
         /* --- Περιοχή Παιχνιδιού --- */
-        #game-area { margin-top: 30px; font-size: 1.6em; min-height: 400px; }
-        .question-box { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 10px; margin-bottom: 30px; border: 3px solid #5a2e0e; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .question-box h2 { margin: 0; color: #2c1a0b; }
+        #game-area { margin-top: 10px; font-size: 1.3em; }
+        .question-box { background: var(--box-bg); padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; border: 2px solid #4a2e1b; box-shadow: 0 3px 6px rgba(0,0,0,0.2); }
+        .question-box h2 { margin: 0; color: #1a1105; font-size: 1.1em; text-shadow: 1px 1px 1px rgba(255,255,255,0.2); }
+        .question-box p { margin: 2px 0 0 0; font-size: 0.9em; }
         
         .choice-btn {
-            font-size: 1.2em; padding: 15px 30px; margin: 10px; cursor: pointer;
-            border: 3px solid #ccc; background: rgba(255, 255, 255, 0.9); border-radius: 8px;
-            display: inline-block; width: 40%; font-weight: 600; color: #333; transition: all 0.2s;
+            font-size: 1em; padding: 6px 12px; margin: 4px; cursor: pointer;
+            border: 2px solid #5a4231; background: #c2b5a3; border-radius: 6px; 
+            display: inline-block; width: 45%; font-weight: 600; color: #1a1105; transition: all 0.2s;
         }
-        .choice-btn-full { width: 80%; display: block; margin: 10px auto; }
-        .choice-btn:hover, .choice-btn-full:hover { background: #fff; border-color: #d35400; transform: scale(1.02); }
+        .choice-btn-full { width: 80%; display: block; margin: 4px auto; }
+        .choice-btn:hover, .choice-btn-full:hover { background: #d0c5b5; border-color: #a04000; transform: scale(1.02); }
+        
+        /* --- Κουμπιά-ασπίδες --- */
+        .shield-btn {
+            width: 140px; 
+            height: auto;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, filter 0.2s;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4));
+        }
+        
+        .shield-btn:hover {
+            transform: scale(1.1) rotate(3deg);
+            filter: drop-shadow(0 6px 6px rgba(0,0,0,0.5));
+        }
+        
+        .shield-btn:active {
+            transform: scale(0.95);
+        }
+        
+        @media (max-width: 600px) {
+            .shield-btn {
+                width: 100px;
+                margin: 0 2px;
+            }
+            .scoreboard { font-size: 1.1em; padding: 6px; }
+            h1 { font-size: 1.6em; }
+        }
         
         /* --- Drag & Drop (Tap to match) --- */
-        .match-container { display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 20px; }
+        .match-container { display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 5px; }
         .match-term { 
-            background: #2980b9; color: white; padding: 15px; border-radius: 8px; 
-            cursor: pointer; margin: 10px; border: 3px solid transparent; width: 30%; font-size: 1.2em;
+            background: #21618c; color: white; padding: 6px; border-radius: 6px; 
+            cursor: pointer; margin: 4px; border: 2px solid transparent; width: 30%; font-size: 1em;
         }
-        .match-term.selected { border-color: #f1c40f; transform: scale(1.05); background: #1f618d; }
+        .match-term.selected { border-color: #f1c40f; transform: scale(1.05); background: #154360; }
         .match-def { 
-            background: rgba(255, 255, 255, 0.9); border: 3px dashed #7f8c8d; padding: 20px; 
-            border-radius: 8px; cursor: pointer; margin: 10px; width: 40%; font-size: 1.1em;
+            background: #c2b5a3; border: 2px dashed #4a2e1b; padding: 8px; 
+            border-radius: 6px; cursor: pointer; margin: 4px; width: 45%; font-size: 0.9em;
+            color: #1a1105;
         }
-        .match-def.filled { border-style: solid; background: #ecf0f1; border-color: #27ae60; }
+        .match-def.filled { border-style: solid; background: #a69c8a; border-color: #1e8449; }
         
         /* --- Utilities --- */
         .hidden { display: none !important; }
-        .reset-btn { margin-top: 50px; background: #7f8c8d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-family: 'Cinzel', serif;}
-        .next-btn { margin-top: 30px; font-size: 1.3em; padding: 15px 30px; background: #2980b9; color: white; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px #1c5980;}
-        .next-btn:active { box-shadow: 0 0 #1c5980; transform: translateY(4px); }
+        .reset-btn { margin-top: 15px; background: #5d6d7e; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.9em;}
+        .next-btn { margin-top: 5px; font-size: 1.1em; padding: 6px 15px; background: #21618c; color: white; border: none; border-radius: 6px; cursor: pointer; box-shadow: 0 3px #154360;}
+        .next-btn:active { box-shadow: 0 0 #154360; transform: translateY(3px); }
         
         /* --- Footer --- */
         footer {
@@ -123,20 +169,24 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background: linear-gradient(to top, rgba(244, 232, 211, 1) 15%, rgba(244, 232, 211, 0.8) 50%, transparent 100%);
-            color: #5a2e0e; 
-            padding: 30px 10px 10px 10px; 
-            font-size: 1.1em;
+            background: linear-gradient(to top, rgba(162, 175, 185, 1) 15%, rgba(162, 175, 185, 0.8) 50%, transparent 100%);
+            color: #1a1105; 
+            padding: 15px 10px 5px 10px; 
+            font-size: 0.9em;
             text-align: center;
             z-index: 1000;
             font-family: 'EB Garamond', serif;
             font-weight: 600;
-            text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.5);
             pointer-events: none;
         }
     </style>
 </head>
 <body>
+
+    <audio id="bg-music" loop>
+        <source src="audio.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="invitation-screen">
         <h1>Επίσημη Πρόσκληση 📜</h1>
@@ -159,29 +209,31 @@
 
     <div id="main-game" class="hidden">
         <h1>🏰 Μεσαιωνικό Τουρνουά Γνώσεων 👑</h1>
+        <br>
+        <h3 class="flashing-gold" style="margin-bottom: 8px;">🔔 Απαντά η ομάδα που πατά πρώτη το buzzer!</h3>
 
         <div class="scoreboard">
             <div class="score-west">
                 🛡️ Ιππότες (Δύση): <span id="scoreW">0</span>
                 <br>
                 <button class="points-btn" style="background:#2c3e50; color:white;" onclick="addScore('W', 10)">+10</button>
-                <button class="points-btn" style="background:#e74c3c; color:white;" onclick="addScore('W', -10)">-10</button>
+                <button class="points-btn" style="background:#922b21; color:white;" onclick="addScore('W', -10)">-10</button>
             </div>
             <div class="score-east">
                 🦅 Άρχοντες (Βυζάντιο): <span id="scoreE">0</span>
                 <br>
-                <button class="points-btn" style="background:#8e44ad; color:white;" onclick="addScore('E', 10)">+10</button>
-                <button class="points-btn" style="background:#e74c3c; color:white;" onclick="addScore('E', -10)">-10</button>
+                <button class="points-btn" style="background:#5a2673; color:white;" onclick="addScore('E', 10)">+10</button>
+                <button class="points-btn" style="background:#922b21; color:white;" onclick="addScore('E', -10)">-10</button>
             </div>
         </div>
 
         <div id="main-menu">
             <button class="menu-btn" onclick="startJousting()">⚔️ Κονταρομαχία</button>
             <button class="menu-btn" onclick="startWisdom()">📜 Δοκιμασία Σοφού</button>
-            <button class="menu-btn" onclick="startBridge()">⚖️ Γέφυρα (Σωστό/Λάθος)</button>
+            <button class="menu-btn" onclick="startBridge()">⚖️ Γέφυρα</button>
             <button class="menu-btn" onclick="startMatching()">🔗 Λεξικό Χρόνου</button>
-            <br><br>
-            <button class="menu-btn btn-gold" onclick="startCeremony()">🏆 Τελετή Απονομής</button>
+            <br>
+            <button class="menu-btn btn-gold" style="margin-top: 5px;" onclick="startCeremony()">🏆 Τελετή Απονομής</button>
         </div>
 
         <div id="game-area" class="hidden"></div>
@@ -194,21 +246,40 @@
     </footer>
 
     <script>
-        // --- Μετάβαση από Πρόσκληση σε Βίντεο ---
+        const bgMusic = document.getElementById('bg-music');
+        const video = document.getElementById('intro-video');
+
+        function startMusic() {
+            if (bgMusic.paused && document.getElementById('main-game').classList.contains('hidden')) {
+                bgMusic.play().catch(e => console.log("Autoplay blocked until user interaction."));
+            }
+            document.removeEventListener('click', startMusic);
+        }
+        document.addEventListener('click', startMusic);
+
+        if (video) {
+            video.addEventListener('play', () => {
+                if (bgMusic) bgMusic.pause();
+            });
+        }
+
         function acceptInvitation() {
             document.getElementById('invitation-screen').classList.add('hidden');
             document.getElementById('intro-screen').classList.remove('hidden');
+            
+            if (bgMusic && bgMusic.paused) {
+                bgMusic.play().catch(e => console.log("Autoplay blocked."));
+            }
         }
 
-        // --- Μετάβαση από Βίντεο στο Παιχνίδι ---
         function enterTournament() {
-            const video = document.getElementById('intro-video');
             if(video) { video.pause(); }
+            if(bgMusic) { bgMusic.pause(); } 
+            
             document.getElementById('intro-screen').classList.add('hidden');
             document.getElementById('main-game').classList.remove('hidden');
         }
 
-        // --- ΣΥΣΤΗΜΑ ΣΚΟΡ (Αυτόματη Αποθήκευση) ---
         let scoreWest = localStorage.getItem('medievalScoreW') ? parseInt(localStorage.getItem('medievalScoreW')) : 0;
         let scoreEast = localStorage.getItem('medievalScoreE') ? parseInt(localStorage.getItem('medievalScoreE')) : 0;
 
@@ -242,7 +313,7 @@
             mainMenu.classList.remove('hidden');
         }
 
-        // --- ΔΟΚΙΜΑΣΙΑ 1: ΚΟΝΤΑΡΟΜΑΧΙΑ ---
+        // --- ΔΟΚΙΜΑΣΙΑ 1: ΚΟΝΤΑΡΟΜΑΧΙΑ (10 Ερωτήσεις) ---
         const joustingQuestions = [
             { q: "Η παιδική εργασία στα χωράφια ξεκινούσε από την ανατολή ως τη δύση;", a: "Δύση" },
             { q: "Διέθεταν οργανωμένα κρατικά νοσοκομεία σε κάθε πόλη;", a: "Βυζάντιο" },
@@ -250,7 +321,10 @@
             { q: "Η εκπαίδευση ήταν προνόμιο μόνο των λίγων (μοναστήρια ή ελίτ);", a: "Δύση" },
             { q: "Είχαν λατρεία για το μακιγιάζ, τα κοσμήματα και τα μεταξωτά;", a: "Βυζάντιο" },
             { q: "Οι φτωχοί ζούσαν συχνά σε σπίτια με τον στάβλο στο ισόγειο;", a: "Βυζάντιο" },
-            { q: "Οι προσκυνητές ταξίδευαν στο Σαντιάγο ντε Κομποστέλα;", a: "Δύση" }
+            { q: "Οι προσκυνητές ταξίδευαν στο Σαντιάγο ντε Κομποστέλα;", a: "Δύση" },
+            { q: "Η κοινωνία ήταν οργανωμένη γύρω από φεουδάρχες και πέτρινα κάστρα;", a: "Δύση" },
+            { q: "Υπήρχε το δικαίωμα διαζυγίου και ο γάμος γινόταν με προικοσύμφωνο;", a: "Βυζάντιο" },
+            { q: "Η Εκκλησία διατηρούσε οργανωμένα πτωχοκομεία και ορφανοτροφεία;", a: "Βυζάντιο" }
         ];
         let currentJQuestion = 0;
 
@@ -263,17 +337,28 @@
 
         function renderJoustingQuestion() {
             if(currentJQuestion >= joustingQuestions.length) {
-                gameArea.innerHTML = `<h2>Τέλος Δοκιμασίας!</h2><button class="menu-btn" onclick="showMenu()">Επιστροφή στο Μενού</button>`;
+                gameArea.innerHTML = `<div class="question-box"><h2>Τέλος Δοκιμασίας!</h2></div><button class="menu-btn" onclick="showMenu()">Επιστροφή στο Μενού</button>`;
                 return;
             }
             let q = joustingQuestions[currentJQuestion];
             gameArea.innerHTML = `
-                <div class="question-box"><h2>${q.q}</h2></div>
-                <div style="display:flex; justify-content:center; gap:20px;">
-                    <button class="choice-btn" style="border-color:var(--west-color); color:var(--west-color);" onclick="checkJousting('Δύση')">🛡️ Μεσαιωνική Ευρώπη</button>
-                    <button class="choice-btn" style="border-color:var(--east-color); color:var(--east-color);" onclick="checkJousting('Βυζάντιο')">🦅 Βυζάντιο</button>
+                <div class="question-box"><h2>${currentJQuestion + 1}. ${q.q}</h2></div>
+                
+                <div style="display:flex; justify-content:center; align-items: center; margin: 5px 0;">
+                    <div style="text-align:center;">
+                         <img src="shield1.png" alt="Δύση - Μεσαιωνική Ευρώπη" class="shield-btn" onclick="checkJousting('Δύση')">
+                         <p style="font-family: 'Cinzel', serif; color: var(--west-color); font-weight: 900; margin-top: 2px; font-size: 0.9em;">ΙΠΠΟΤΕΣ</p>
+                    </div>
+                    
+                    <h2 style="margin: 0 10px; font-size: 1.8em; font-family: 'Cinzel', serif; color:#a04000;">VS</h2> 
+
+                    <div style="text-align:center;">
+                        <img src="shield2.png" alt="Ανατολή - Βυζάντιο" class="shield-btn" onclick="checkJousting('Βυζάντιο')">
+                        <p style="font-family: 'Cinzel', serif; color: #5a2673; font-weight: 900; margin-top: 2px; font-size: 0.9em;">ΑΡΧΟΝΤΕΣ</p>
+                    </div>
                 </div>
-                <p><em>(Η ομάδα που θα πατήσει πρώτη το σωστό παίρνει πόντους!)</em></p>
+
+                <p style="font-size: 0.8em; margin: 0 0 5px 0;"><em>(Αγγίξτε την ασπίδα της σωστής ομάδας)</em></p>
                 <button class="next-btn" onclick="currentJQuestion++; renderJoustingQuestion()">Επόμενη Ερώτηση ➔</button>
             `;
         }
@@ -285,13 +370,18 @@
             currentJQuestion++; renderJoustingQuestion();
         }
 
-        // --- ΔΟΚΙΜΑΣΙΑ 2: ΣΟΦΟΣ (Πολλαπλής Επιλογής) ---
+        // --- ΔΟΚΙΜΑΣΙΑ 2: ΣΟΦΟΣ (Πολλαπλής Επιλογής - 10 Ερωτήσεις) ---
         const wisdomQuestions = [
             { q: "Πώς ήταν το σπίτι ενός φτωχού χωρικού στην Ευρώπη;", opts: ["Ένα δωμάτιο από λάσπη και άχυρα", "Διώροφο με εσωτερική αυλή", "Πολυκατοικία με κοινόχρηστο λουτρό"], correct: 0 },
             { q: "Τι μαθήματα διδάσκονταν στα σχολεία του Βυζαντίου;", opts: ["Μόνο θρησκευτικά και ανάγνωση", "Όμηρος, Μαθηματικά, Αστρονομία", "Ξιφασκία και ιππασία"], correct: 1 },
             { q: "Ποιο ήταν το σύμβολο πλούτου και κύρους στο ντύσιμο της Δύσης;", opts: ["Τα πολλά δαχτυλίδια", "Το έντονο μακιγιάζ", "Η γούνα και το μήκος του ρούχου"], correct: 2 },
-            { q: "Ποιος ήταν ο ρόλος της γυναίκας στο Βυζάντιο;", opts: ["Δεν έβγαινε ποτέ από το σπίτι", "Κάλυπτε το πρόσωπο έξω, αλλά συχνά κυριαρχούσε μέσα στο σπίτι", "Διοικούσε τον στρατό σε ώρα πολέμου"], correct: 1 },
-            { q: "Ποια ήταν η βάση της διατροφής στη Μεσαιωνική Ευρώπη;", opts: ["Ψωμί και κρασί", "Ορεκτικά και ψάρια", "Ρύζι και μπαχαρικά"], correct: 0 }
+            { q: "Ποιος ήταν ο ρόλος της γυναίκας στο Βυζάντιο;", opts: ["Δεν έβγαινε ποτέ από το σπίτι", "Κάλυπτε το πρόσωπο έξω, αλλά συχνά κυριαρχούσε μέσα", "Διοικούσε τον στρατό σε ώρα πολέμου"], correct: 1 },
+            { q: "Ποια ήταν η βάση της διατροφής στη Μεσαιωνική Ευρώπη;", opts: ["Ψωμί και κρασί", "Ορεκτικά και ψάρια", "Ρύζι και μπαχαρικά"], correct: 0 },
+            { q: "Ποιος ήταν ένας σημαντικός προορισμός των προσκυνητών στη Δύση;", opts: ["Το Άγιο Όρος", "Το Σαντιάγο ντε Κομποστέλα", "Η Κωνσταντινούπολη"], correct: 1 },
+            { q: "Πού διέμεναν συνήθως οι μοναχοί στο Βυζάντιο;", opts: ["Σε μεγάλα αστικά κέντρα και κάστρα", "Στην έρημο ή στο Άγιο Όρος", "Σε πολυώροφα αρχοντικά με λουτρά"], correct: 1 },
+            { q: "Τι χαρακτηριστικό είχαν τα σπίτια των πλουσίων στο Βυζάντιο;", opts: ["Ήταν πέτρινα και κρύα κάστρα", "Ήταν καλύβες από λάσπη", "Ήταν πολυώροφα με σάλα υποδοχής, λουτρό και παρεκκλήσι"], correct: 2 },
+            { q: "Πώς διασκέδαζαν οι κάτοικοι στα κάστρα της Δύσης;", opts: ["Με αρματοδρομίες", "Με κονταρομαχίες (jousting) και τροβαδούρους", "Με επισκέψεις στα νοσοκομεία"], correct: 1 },
+            { q: "Τι κοινό είχαν οι δύο κόσμοι (Δύση και Βυζάντιο);", opts: ["Την απόλυτη ισότητα μεταξύ των φύλων", "Το τεράστιο χάσμα μεταξύ πλουσίων και φτωχών", "Τα ίδια ρούχα και διατροφή"], correct: 1 }
         ];
         let currentWQuestion = 0;
 
@@ -304,7 +394,7 @@
 
         function renderWisdomQuestion() {
             if(currentWQuestion >= wisdomQuestions.length) {
-                gameArea.innerHTML = `<h2>Τέλος Δοκιμασίας!</h2><button class="menu-btn" onclick="showMenu()">Επιστροφή στο Μενού</button>`;
+                gameArea.innerHTML = `<div class="question-box"><h2>Τέλος Δοκιμασίας!</h2></div><button class="menu-btn" onclick="showMenu()">Επιστροφή στο Μενού</button>`;
                 return;
             }
             let q = wisdomQuestions[currentWQuestion];
@@ -314,9 +404,9 @@
             });
 
             gameArea.innerHTML = `
-                <div class="question-box"><h2>${q.q}</h2></div>
+                <div class="question-box"><h2>${currentWQuestion + 1}. ${q.q}</h2></div>
                 ${optionsHTML}
-                <button class="next-btn" onclick="currentWQuestion++; renderWisdomQuestion()">Επόμενη Ερώτηση ➔</button>
+                <button class="next-btn" style="margin-top: 5px;" onclick="currentWQuestion++; renderWisdomQuestion()">Επόμενη Ερώτηση ➔</button>
             `;
         }
 
@@ -327,13 +417,18 @@
             currentWQuestion++; renderWisdomQuestion();
         }
 
-        // --- ΔΟΚΙΜΑΣΙΑ 3: ΓΕΦΥΡΑ (Σωστό/Λάθος) ---
+        // --- ΔΟΚΙΜΑΣΙΑ 3: ΓΕΦΥΡΑ (Σωστό/Λάθος - 10 Ερωτήσεις) ---
         const bridgeQuestions = [
             { q: "Στη Δύση, ο σύζυγος θεωρούσε τη γυναίκα κατώτερη και είχε δικαίωμα σωματικής τιμωρίας.", a: true, expl: "Η γυναίκα θεωρούνταν κατώτερη." },
             { q: "Τα πέτρινα κάστρα της Δύσης ήταν ζεστά και πολύ άνετα τον χειμώνα.", a: false, expl: "Ήταν ασφαλή και σύμβολα γοήτρου, αλλά πολύ κρύα." },
             { q: "Στο Βυζάντιο υπήρχαν και δωρεάν σχολεία για τα ορφανά.", a: true, expl: "Παρότι υπήρχαν δίδακτρα, υπήρχε και μέριμνα για τα ορφανά." },
-            { q: "Και στους δύο κόσμους, οι γυναίκες είχαν ακριβώς τα ίδια δικαιώματα με τους άνδρες.", a: false, expl: "Οι γυναίκες είχαν περιορισμένα δικαιώματα υπό ανδρική κυριαρχία και στις δύο κοινωνίες." },
-            { q: "Η μαγεία και η δεισιδαιμονία είχαν εξαφανιστεί πλήρως στο Βυζάντιο χάρη στους γιατρούς.", a: false, expl: "Παρά την επιστήμη, η μαγεία παρέμενε δημοφιλής." }
+            { q: "Και στους δύο κόσμους, οι γυναίκες είχαν ακριβώς τα ίδια δικαιώματα με τους άνδρες.", a: false, expl: "Οι γυναίκες είχαν περιορισμένα δικαιώματα και στις δύο κοινωνίες." },
+            { q: "Η μαγεία και η δεισιδαιμονία είχαν εξαφανιστεί πλήρως στο Βυζάντιο.", a: false, expl: "Παρά την επιστήμη, η μαγεία παρέμενε δημοφιλής." },
+            { q: "Στο Βυζάντιο, η γυναίκα κάλυπτε το πρόσωπό της έξω αλλά συχνά κυριαρχούσε μέσα στο σπίτι.", a: true, expl: "Από τον 11ο αιώνα συμμετείχε και περισσότερο στα κοινά." },
+            { q: "Η διατροφή στη Μεσαιωνική Δύση βασιζόταν αποκλειστικά στο ψάρι και τα ορεκτικά.", a: false, expl: "Η βάση ήταν το ψωμί, το κρασί και το κρέας (χοιροσφάγια). Το ψάρι αφορούσε το Βυζάντιο." },
+            { q: "Τα ρούχα στη Μεσαιωνική Ευρώπη δήλωναν ξεκάθαρα την κοινωνική τάξη (π.χ. μοναχοί, ιππότες).", a: true, expl: "Τα ρούχα, όπως η γούνα, αποτελούσαν σύμβολο (status)." },
+            { q: "Το Βυζάντιο ήταν κυρίως μια αγροτική κοινωνία χωρίς καθόλου κρατικούς θεσμούς.", a: false, expl: "Ήταν μια αστική κοινωνία οργανωμένη με νοσοκομεία και σχολεία." },
+            { q: "Οι γιορτές στο Βυζάντιο περιλάμβαναν πανηγύρια με μάγους και φωτιές στους δρόμους (Απόκριες).", a: true, expl: "Αποτελούσαν μέρος του λαϊκού θεάματος." }
         ];
         let currentBQuestion = 0;
 
@@ -346,17 +441,17 @@
 
         function renderBridgeQuestion() {
             if(currentBQuestion >= bridgeQuestions.length) {
-                gameArea.innerHTML = `<h2>Τέλος Δοκιμασίας!</h2><button class="menu-btn" onclick="showMenu()">Επιστροφή στο Μενού</button>`;
+                gameArea.innerHTML = `<div class="question-box"><h2>Τέλος Δοκιμασίας!</h2></div><button class="menu-btn" onclick="showMenu()">Επιστροφή στο Μενού</button>`;
                 return;
             }
             let q = bridgeQuestions[currentBQuestion];
             gameArea.innerHTML = `
-                <div class="question-box"><h2>${q.q}</h2></div>
-                <div style="display:flex; justify-content:center; gap: 20px;">
-                    <button class="choice-btn" style="background:#2ecc71; color:white; border-color:#27ae60;" onclick="checkBridge(true)">ΣΩΣΤΟ</button>
-                    <button class="choice-btn" style="background:#e74c3c; color:white; border-color:#c0392b;" onclick="checkBridge(false)">ΛΑΘΟΣ</button>
+                <div class="question-box"><h2>${currentBQuestion + 1}. ${q.q}</h2></div>
+                <div style="display:flex; justify-content:center; gap: 10px;">
+                    <button class="choice-btn" style="background:#1e8449; color:white; border-color:#145a32; width: 35%;" onclick="checkBridge(true)">ΣΩΣΤΟ</button>
+                    <button class="choice-btn" style="background:#922b21; color:white; border-color:#641e16; width: 35%;" onclick="checkBridge(false)">ΛΑΘΟΣ</button>
                 </div>
-                <button class="next-btn" onclick="currentBQuestion++; renderBridgeQuestion()">Επόμενη Ερώτηση ➔</button>
+                <button class="next-btn" style="margin-top: 5px;" onclick="currentBQuestion++; renderBridgeQuestion()">Επόμενη Ερώτηση ➔</button>
             `;
         }
 
@@ -368,31 +463,63 @@
             currentBQuestion++; renderBridgeQuestion();
         }
 
-        // --- ΔΟΚΙΜΑΣΙΑ 4: ΤΑΙΡΙΑΣΜΑ ---
+        // --- ΔΟΚΙΜΑΣΙΑ 4: ΤΑΙΡΙΑΣΜΑ (2 Sets x 3 Όρους) ---
+        const matchingSets = [
+            [
+                { term: 'Συντεχνίες', def: 'Ενώσεις επαγγελματιών (έμποροι, τεχνίτες).' },
+                { term: 'Χοιροσφάγια', def: 'Εξασφάλιζαν το κρέας του χειμώνα τον Δεκέμβριο.' },
+                { term: 'Ιππόδρομος', def: 'Κέντρο για αρματοδρομίες και τελετές.' }
+            ],
+            [
+                { term: 'Ιπποτικός Έρωτας', def: 'Ο ιππότης κάνει ηρωικές πράξεις για την αγαπημένη.' },
+                { term: 'Κοινοβιακός Μοναχισμός', def: 'Οργάνωση μοναχών σε κοινότητες υπό έναν ηγούμενο.' },
+                { term: 'Πτωχοκομεία', def: 'Ιδρύματα πρόνοιας που συντηρούσε η Εκκλησία.' }
+            ]
+        ];
+        
+        let currentMatchSet = 0;
         let selectedTerm = null;
         let matchesMade = 0;
         
         function startMatching() {
             mainMenu.classList.add('hidden');
             gameArea.classList.remove('hidden');
-            matchesMade = 0; selectedTerm = null;
+            currentMatchSet = 0;
+            renderMatchingSet();
+        }
+
+        function renderMatchingSet() {
+            matchesMade = 0; 
+            selectedTerm = null;
+            let set = matchingSets[currentMatchSet];
             
+            let termsHTML = '';
+            let defsHTML = '';
+            
+            // Απλό ανακάτεμα των ορισμών για να μην είναι δίπλα-δίπλα με τους όρους
+            let shuffledDefs = [...set].sort(() => Math.random() - 0.5);
+
+            set.forEach(item => {
+                termsHTML += `<div class="match-term" onclick="selectTerm(this, '${item.term}')">${item.term}</div>`;
+            });
+
+            shuffledDefs.forEach(item => {
+                defsHTML += `<div class="match-def" onclick="placeTerm(this, '${item.term}')">${item.def}</div>`;
+            });
+
             gameArea.innerHTML = `
-                <div class="question-box">
-                    <h2>Οδηγίες:</h2>
-                    <p style="font-family: 'EB Garamond', serif;">Αγγίξτε έναν μπλε όρο και μετά αγγίξτε το σωστό κουτί για να τον τοποθετήσετε.</p>
+                <div class="question-box" style="margin-bottom: 5px;">
+                    <h2 style="margin-bottom: 2px;">Οδηγίες (Γύρος ${currentMatchSet + 1}/2):</h2>
+                    <p style="font-family: 'EB Garamond', serif;">Αγγίξτε έναν όρο και μετά το σωστό κουτί για να τον τοποθετήσετε.</p>
                 </div>
-                <div class="match-container" id="terms-container">
-                    <div class="match-term" onclick="selectTerm(this, 'Συντεχνίες')">Συντεχνίες</div>
-                    <div class="match-term" onclick="selectTerm(this, 'Χοιροσφάγια')">Χοιροσφάγια</div>
-                    <div class="match-term" onclick="selectTerm(this, 'Ιππόδρομος')">Ιππόδρομος</div>
+                <div class="match-container" id="terms-container">${termsHTML}</div>
+                <div class="match-container" id="defs-container">${defsHTML}</div>
+                
+                <div id="match-next-btn-container" class="hidden" style="margin-top: 15px;">
+                    <button class="next-btn" onclick="nextMatchingSet()">Επόμενος Γύρος ➔</button>
                 </div>
-                <div class="match-container" id="defs-container">
-                    <div class="match-def" onclick="placeTerm(this, 'Συντεχνίες')">Ενώσεις επαγγελματιών (έμποροι, τεχνίτες).</div>
-                    <div class="match-def" onclick="placeTerm(this, 'Ιππόδρομος')">Κέντρο για αρματοδρομίες και τελετές.</div>
-                    <div class="match-def" onclick="placeTerm(this, 'Χοιροσφάγια')">Εξασφάλιζαν το κρέας του χειμώνα τον Δεκέμβριο.</div>
-                </div>
-                <button class="menu-btn" style="margin-top:30px;" onclick="showMenu()">Επιστροφή στο Μενού</button>
+                
+                <button id="match-back-btn" class="menu-btn" style="margin-top:10px;" onclick="showMenu()">Επιστροφή στο Μενού</button>
             `;
         }
 
@@ -406,14 +533,31 @@
             if (!selectedTerm) return;
             if (selectedTerm.text === correctTerm) {
                 element.innerHTML = `<strong style="font-family: 'Cinzel', serif;">${selectedTerm.text}</strong>: <br>` + element.innerHTML;
-                element.classList.add('filled'); element.style.borderColor = "#27ae60";
+                element.classList.add('filled'); element.style.borderColor = "#1e8449";
                 selectedTerm.el.style.display = "none"; selectedTerm = null; matchesMade++;
-                if(matchesMade === 3) { setTimeout(() => alert("Άριστα! Μοιράστε τους πόντους!"), 500); }
+                
+                if(matchesMade === 3) { 
+                    setTimeout(() => {
+                        alert("Άριστα για αυτόν τον γύρο!");
+                        if (currentMatchSet < matchingSets.length - 1) {
+                            document.getElementById('match-next-btn-container').classList.remove('hidden');
+                            document.getElementById('match-back-btn').classList.add('hidden');
+                        } else {
+                            alert("Ολοκληρώσατε το Λεξικό του Χρόνου! Μοιράστε τους πόντους.");
+                            showMenu();
+                        }
+                    }, 500); 
+                }
             } else {
-                element.style.borderColor = "#e74c3c";
-                setTimeout(() => element.style.borderColor = "#7f8c8d", 1000);
+                element.style.borderColor = "#922b21";
+                setTimeout(() => element.style.borderColor = "#4a2e1b", 1000);
                 alert("Λάθος ταίριασμα! Δοκιμάστε ξανά.");
             }
+        }
+        
+        function nextMatchingSet() {
+            currentMatchSet++;
+            renderMatchingSet();
         }
 
         // --- ΤΕΛΕΤΗ ΑΠΟΝΟΜΗΣ ---
@@ -431,22 +575,22 @@
                 textColor = "var(--west-color)";
             } else if (scoreEast > scoreWest) {
                 winnerText = "🦅<br>Νικητές είναι οι Άρχοντες του Βυζαντίου!";
-                borderColor = "var(--east-color)";
-                textColor = "var(--east-color)";
+                borderColor = "#5a2673";
+                textColor = "#5a2673";
             } else {
                 winnerText = "🤝<br>Ισοπαλία!<br>Και οι δύο κόσμοι επικράτησαν!";
-                borderColor = "#f39c12";
-                textColor = "#333";
+                borderColor = "#a04000";
+                textColor = "#3e1f08";
             }
 
             gameArea.innerHTML = `
-                <div class="question-box" style="border: 5px solid ${borderColor}; padding: 40px; background: rgba(255,255,255,0.95);">
-                    <h1 style="color: ${textColor}; font-size: 2.8em; border: none; line-height: 1.2;">${winnerText}</h1>
-                    <h2 style="color: #7f8c8d; margin-top: 20px;">Τελικό Σκορ</h2>
-                    <p style="font-size: 1.8em; font-weight: bold; font-family: 'Cinzel', serif;">
+                <div class="question-box" style="border: 4px solid ${borderColor}; padding: 15px; background: var(--box-bg);">
+                    <h1 style="color: ${textColor}; font-size: 2em; border: none; line-height: 1.2; margin-bottom: 5px;">${winnerText}</h1>
+                    <h2 style="color: #4a2e1b; margin-top: 10px;">Τελικό Σκορ</h2>
+                    <p style="font-size: 1.5em; font-weight: bold; font-family: 'Cinzel', serif; margin-top: 5px;">
                         <span style="color: var(--west-color);">Δύση: ${scoreWest}</span> 
                         &nbsp;&nbsp;|&nbsp;&nbsp; 
-                        <span style="color: var(--east-color);">Βυζάντιο: ${scoreEast}</span>
+                        <span style="color: #5a2673;">Βυζάντιο: ${scoreEast}</span>
                     </p>
                 </div>
                 <button class="menu-btn" onclick="showMenu()">Επιστροφή στο Μενού</button>
@@ -456,8 +600,8 @@
             let end = Date.now() + duration;
 
             (function frame() {
-                confetti({ particleCount: 7, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#2c3e50', '#f1c40f', '#e74c3c'] });
-                confetti({ particleCount: 7, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#8e44ad', '#f1c40f', '#3498db'] });
+                confetti({ particleCount: 7, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#2c3e50', '#d68910', '#922b21'] });
+                confetti({ particleCount: 7, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#5a2673', '#d68910', '#21618c'] });
                 if (Date.now() < end) { requestAnimationFrame(frame); }
             }());
         }
